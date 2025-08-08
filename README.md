@@ -61,7 +61,7 @@ View your financial overview with top transactions and pending debts.
 
 
 
-(Placeholder: See wwwroot/images/)
+(Placeholder: See wwwroot/dashboard.jpg/)
 
 💸 Transaction Forms
 Add inflows, outflows, and debts with ease.
@@ -69,15 +69,15 @@ Add inflows, outflows, and debts with ease.
 
 
 
-(Placeholder: See wwwroot/images/)
+(Placeholder: See wwwroot/alltransactions.jpg/)
 
-🔍 Search and Filter
-Quickly find transactions by title, tag, or date.
-
-
+🔍 Add Cash 
+Quickly add Inflow , Outflow and Debt.
 
 
-(Placeholder: See wwwroot/images/)
+
+
+(Placeholder: See wwwroot/addcash.jpg/)
 
 More screenshots are available in the wwwroot/images/ directory.
 

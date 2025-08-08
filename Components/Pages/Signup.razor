@@ -1,0 +1,102 @@
+﻿@page "/signup"
+@using SpendWise.Models
+@using SpendWise.Services
+@inject IUserService userService
+@inject NavigationManager navigationManager
+
+<div class="signup-container" style="max-width: 400px; margin: 50px auto; padding: 20px; background: #f9f9f9; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+    <h3 class="text-center" style="text-align: center;">Sign Up</h3>
+
+    <form class="signup-form">
+        <div class="form-group" style="margin-bottom: 15px;">
+            <label for="username" style="display: block; margin-bottom: 5px; font-weight: bold;">User Name:</label>
+            <input type="text" id="username" class="form-control" @bind="newUser.UserName" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;" />
+        </div>
+        <div class="form-group" style="margin-bottom: 15px;">
+            <label for="password" style="display: block; margin-bottom: 5px; font-weight: bold;">Password:</label>
+            <input type="password" id="password" class="form-control" @bind="newUser.Password" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;" />
+        </div>
+        <div class="form-group" style="margin-bottom: 15px;">
+            <label for="retypePassword" style="display: block; margin-bottom: 5px; font-weight: bold;">Retype Password:</label>
+            <input type="password" id="retypePassword" class="form-control" @bind="retypePassword" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;" />
+        </div>
+        <div class="form-group" style="margin-bottom: 15px;">
+            <label for="currencyType" style="display: block; margin-bottom: 5px; font-weight: bold;">Currency Type:</label>
+            <select id="currencyType" class="form-control" @bind="newUser.CurrencyType" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+                <option value="" disabled selected>Choose your preferred currency.</option>
+                <option value="$">USD</option>
+                <option value="€">EUR</option>
+                <option value="RS">NEP</option>
+            </select>
+        </div>
+        <button type="button" class="btn btn-primary" @onclick="AddNewUser" style="display: block; width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">
+            Sign Up
+        </button>
+    </form>
+
+    <p class="text-small" style="font-size: 14px; margin-top: 15px; text-align: center;">
+        Already have an account?
+        <a href="/" style="color: #007bff; text-decoration: none;">Login</a>
+    </p>
+
+    @if (errorMessage != null)
+    {
+        <div class="alert" style="padding: 10px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 5px; font-size: 14px; margin-top: 15px;">
+            @errorMessage
+        </div>
+    }
+</div>
+
+@code {
+    private User newUser = new User();
+    private string errorMessage;
+    private string retypePassword;
+
+    private async Task AddNewUser()
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(newUser.UserName))
+            {
+                errorMessage = "User Name is required.";
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(newUser.Password))
+            {
+                errorMessage = "Password is required.";
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(retypePassword))
+            {
+                errorMessage = "Please confirm your password.";
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(newUser.CurrencyType))
+            {
+                errorMessage = "Currency Type is required.";
+                return;
+            }
+            if (newUser.Password != retypePassword)
+            {
+                errorMessage = "Passwords do not match.";
+                return;
+            }
+
+            var existingUsers = await userService.LoadUsersAsync();
+            if (existingUsers.Any(u => u.UserName.Equals(newUser.UserName, StringComparison.OrdinalIgnoreCase)))
+            {
+                throw new Exception("Username already exists.");
+            }
+
+            await userService.SaveUserAsync(newUser);
+            newUser = new User();
+            errorMessage = null;
+            navigationManager.NavigateTo("/");
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"An error occurred while adding the user: {ex.Message}";
+            Console.WriteLine(errorMessage);
+        }
+    }
+}

@@ -1,0 +1,181 @@
+﻿@page "/cashOutflow"
+@using SpendWise.Models
+@using SpendWise.Services
+@using SpendWise.Dtos
+@inject ITransactionService TransactionService
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateService AuthenticationStateService;
+@inject ITransactionHelperService TransactionHelperService;
+
+<h3 style="text-align: center; margin-top: 20px; color: #007bff; font-size: 1.5rem;">Cash Outflow</h3>
+
+<form class="transaction-form" style="max-width: 600px; margin: 20px auto; padding: 25px; background-color: #fff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
+    <div class="form-group" style="margin-bottom: 20px;">
+        <label for="amount" style="font-weight: bold; font-size: 1rem;">Amount:</label>
+        <input type="number" id="amount" class="form-control" @bind="newTransaction.Amount" required placeholder="Enter amount" style="width: 100%; padding: 12px; margin-top: 5px; border-radius: 4px; border: 1px solid #ccc; font-size: 1rem;" />
+    </div>
+
+    <div class="form-group" style="margin-bottom: 20px;">
+        <label for="tagType" style="font-weight: bold; font-size: 1rem;">Tag Type:</label>
+        <select id="tagType" class="form-control" @bind="tagType" style="width: 100%; padding: 12px; margin-top: 5px; border-radius: 4px; border: 1px solid #ccc; font-size: 1rem;">
+            <option value="" disabled selected>Choose your preferred tag type</option>
+            <option value="Custom">Custom</option>
+            <option value="Existing">Existing</option>
+        </select>
+    </div>
+
+    @if (tagType == "Existing")
+    {
+        <div class="form-group" style="margin-bottom: 20px;">
+            <label for="tag" style="font-weight: bold; font-size: 1rem;">Tag:</label>
+            <select id="tag" class="form-control" @bind="newTransaction.TagId" style="width: 100%; padding: 12px; margin-top: 5px; border-radius: 4px; border: 1px solid #ccc; font-size: 1rem;">
+                <option value="" disabled selected>Choose your tag</option>
+                <option value="Rent">Rent</option>
+                <option value="Food">Food</option>
+                <option value="Clothes">Clothes</option>
+                <option value="Others">Others</option>
+            </select>
+        </div>
+    }
+    else
+    {
+        <div class="form-group" style="margin-bottom: 20px;">
+            <label for="customTag" style="font-weight: bold; font-size: 1rem;">Custom Tag:</label>
+            <input type="text" id="customTag" class="form-control" @bind="newTransaction.TagId" placeholder="Enter custom tag" style="width: 100%; padding: 12px; margin-top: 5px; border-radius: 4px; border: 1px solid #ccc; font-size: 1rem;" />
+        </div>
+    }
+
+    <div class="form-group" style="margin-bottom: 20px;">
+        <label for="title" style="font-weight: bold; font-size: 1rem;">Title:</label>
+        <input type="text" id="title" class="form-control" @bind="newTransaction.Title" required placeholder="Enter title" style="width: 100%; padding: 12px; margin-top: 5px; border-radius: 4px; border: 1px solid #ccc; font-size: 1rem;" />
+    </div>
+
+    <div class="form-group" style="margin-bottom: 20px;">
+        <label for="note" style="font-weight: bold; font-size: 1rem;">Note:</label>
+        <input type="text" id="note" class="form-control" @bind="newTransaction.Note" placeholder="Enter note" style="width: 100%; padding: 12px; margin-top: 5px; border-radius: 4px; border: 1px solid #ccc; font-size: 1rem;" />
+    </div>
+
+    <button type="button" class="btn btn-primary" @onclick="AddTransaction" style="display: block; width: 100%; padding: 14px; background-color: #007bff; color: white; border: none; border-radius: 8px; font-size: 1.1rem; cursor: pointer; margin-top: 20px;">
+        Add Outflow
+    </button>
+</form>
+
+@if (errorMessage != null)
+{
+    <p class="error-message" style="color: red; font-weight: bold; text-align: center; margin-top: 20px; font-size: 16px;">@errorMessage</p>
+}
+
+@code {
+    private Transactions newTransaction = new Transactions(); //obj created for Transaction Class
+
+    private string errorMessage;
+    private string tagType;
+
+    private User authenticatedUser = new User();
+
+    private List<Transactions> transactions = new List<Transactions>();
+    private List<Transactions> debtTransactions = new List<Transactions>();
+    private List<Transactions> inflowOutflowTransactions = new List<Transactions>();
+
+    private List<DebtTransactionDto> debtTransactionDtos = new List<DebtTransactionDto>();
+    private List<DebtTransactionDto> remainingDebts = new List<DebtTransactionDto>();
+    private List<DebtTransactionDto> clearedDebts = new List<DebtTransactionDto>();
+
+    private double currentBalance;
+    private double totalInflow;
+    private double totalOutflow;
+    private double totalRemainingDebt;
+    private double totalClearedDebt;
+    private double totalDebt;
+
+    // Fetch transactions on initialization
+    protected override async Task OnInitializedAsync()
+    {
+        authenticatedUser = AuthenticationStateService.GetAuthenticatedUser();
+
+        transactions = await TransactionService.LoadUsersTransactionsAsync(authenticatedUser.UserId);
+
+        inflowOutflowTransactions = TransactionHelperService.ExtractInflowOutflowTransactions(transactions);
+        debtTransactions = TransactionHelperService.ExtractDebtTransactions(transactions);
+
+        debtTransactionDtos = await TransactionHelperService.LoadDebtTransactions(debtTransactions);
+
+        remainingDebts = TransactionHelperService.ExtractRemainingDebts(debtTransactionDtos);
+        clearedDebts = TransactionHelperService.ExtractClearedDebts(debtTransactionDtos);
+
+        totalInflow = TransactionHelperService.CalculateTotalInflow(inflowOutflowTransactions);
+        totalOutflow = TransactionHelperService.CalculateTotalOutflow(inflowOutflowTransactions);
+        totalRemainingDebt = TransactionHelperService.CalculateTotalRemainingDebt(debtTransactionDtos);
+        totalClearedDebt = TransactionHelperService.CalculateTotalClearedDebt(debtTransactionDtos);
+        totalDebt = totalRemainingDebt + totalClearedDebt;
+
+        currentBalance = TransactionHelperService.CalculateCurrentBalance(totalInflow, totalOutflow, totalRemainingDebt);
+
+        if (transactions == null || !transactions.Any())
+        {
+            Console.WriteLine("No transactions found.");
+        }
+    }
+
+    private async Task AddTransaction()
+    {
+        // Validation
+        if (newTransaction.Amount <= 0)
+        {
+            errorMessage = "Amount must be greater than zero.";
+            return;
+        }
+
+        if (newTransaction.Amount > currentBalance)
+        {
+            errorMessage = "Outflow is greater than available balance.";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(tagType))
+        {
+            errorMessage = "Tag Type is required.";
+            return;
+        }
+
+        if (tagType == "Existing" && string.IsNullOrWhiteSpace(newTransaction.TagId))
+        {
+            errorMessage = "Please select an existing tag.";
+            return;
+        }
+
+        if (tagType == "Custom" && string.IsNullOrWhiteSpace(newTransaction.TagId))
+        {
+            errorMessage = "Custom Tag is required.";
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(newTransaction.Title))
+        {
+            errorMessage = "Title is required.";
+            return;
+        }
+
+        newTransaction.UserId = authenticatedUser.UserId;
+        try
+        {
+            newTransaction.TypeId = "Debit"; // because it is an outflow
+
+            // Save the new transaction
+            await TransactionService.SaveTransactionAsync(newTransaction);
+
+            // Reset the object after saving
+            newTransaction = new Transactions();
+            // Clear any previous error messages
+            errorMessage = null;
+
+            // Navigate to the desired page after successful signup
+            NavigationManager.NavigateTo("/allTransactions");
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"An error occurred while adding the transaction: {ex.Message}";
+            Console.WriteLine(errorMessage); // Log for debugging
+        }
+    }
+}
