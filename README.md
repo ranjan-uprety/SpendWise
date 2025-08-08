@@ -1,111 +1,76 @@
-﻿💰 SpendWise: Your Personal Finance Companion
+﻿# 💰 SpendWise: Your Personal Finance Companion
 
-Welcome to SpendWise, a sleek desktop application crafted to simplify personal finance management. Built with .NET MAUI and Blazor Hybrid, SpendWise empowers users to track income, expenses, and debts with intuitive tools and real-time insights, bringing clarity to your financial journey.
+Welcome to **SpendWise**, a sleek desktop application crafted to simplify personal finance management.  
+Built with **.NET MAUI** and **Blazor Hybrid**, SpendWise empowers users to track income, expenses, and debts with intuitive tools and real-time insights — bringing clarity to your financial journey.
 
-🌟 Overview
+---
 
-SpendWise is designed to make budgeting effortless and insightful. Key features include:
+## 🌟 Overview
 
+SpendWise is designed to make budgeting effortless and insightful.  
 
+### Key Features:
+- 📈 **Track Transactions** – Monitor cash inflows, outflows, and debts seamlessly.
+- ⚠️ **Balance Alerts** – Prevent overspending with sufficient balance checks.
+- 🏷️ **Custom Tags** – Organize transactions with personalized labels and notes.
+- 🔎 **Smart Search** – Filter and sort transactions by type, date, or title.
+- 📊 **Insightful Dashboard** – Visualize top transactions and pending debts.
 
+---
 
+## 🎯 Purpose & Audience
 
-📈 Track Transactions: Monitor cash inflows, outflows, and debts seamlessly.
+- **Purpose:** To provide a user-friendly platform for managing personal finances with precision and ease.  
+- **Target Audience:** Budget-conscious individuals, freelancers, students, and anyone seeking financial control and clarity.
 
+---
 
+## 🛠️ Technologies Used
 
-⚠️ Balance Alerts: Prevent overspending with sufficient balance checks.
+- **.NET 8.0** – Robust framework for cross-platform development.
+- **C#** – Core logic for reliable and scalable performance.
+- **MAUI Blazor Hybrid** – Native desktop UI with web technologies (HTML/CSS).
+- **CSS** – Modern, responsive styling for a polished interface.
 
+---
 
+## 📷 Preview
 
-🏷️ Custom Tags: Organize transactions with personalized labels and notes.
+### 📊 Dashboard  
+View your financial overview with top transactions and pending debts.  
+![Dashboard](wwwroot/dashboard.jpg)
 
+### 💸 All Transactions  
+Add inflows, outflows, and debts with ease.  
+![All Transactions](wwwroot/alltransactions.jpg)
 
+### 🔍 Add Cash  
+Quickly add Inflow, Outflow, and Debt.  
+![Add Cash](wwwroot/addcash.jpg)
 
-🔎 Smart Search: Filter and sort transactions by type, date, or title.
+*(More screenshots are available in the `wwwroot/images/` directory.)*
 
+---
 
+## 🚀 Getting Started
 
-📊 Insightful Dashboard: Visualize top transactions and pending debts.
+To run **SpendWise** locally:
 
-🎯 Purpose & Audience
-
-Purpose: To provide a user-friendly platform for managing personal finances with precision and ease.
-Target Audience: Budget-conscious individuals, freelancers, students, and anyone seeking financial control and clarity.
-
-🛠️ Technologies Used
-
-
-
-
-
-.NET 8.0: Robust framework for cross-platform development.
-
-
-
-C#: Core logic for reliable and scalable performance.
-
-
-
-MAUI Blazor Hybrid: Native desktop UI with web technologies (HTML/CSS).
-
-
-
-CSS: Modern, responsive styling for a polished interface.
-
-📷 Preview
-
-📊 Dashboard
-View your financial overview with top transactions and pending debts.
-
-
-
-
-(Placeholder: See wwwroot/dashboard.jpg/)
-
-💸 Transaction Forms
-Add inflows, outflows, and debts with ease.
-
-
-
-
-(Placeholder: See wwwroot/alltransactions.jpg/)
-
-🔍 Add Cash 
-Quickly add Inflow , Outflow and Debt.
-
-
-
-
-(Placeholder: See wwwroot/addcash.jpg/)
-
-More screenshots are available in the wwwroot/images/ directory.
-
-🚀 Getting Started
-
-To run SpendWise locally:
-
-
-
-
-
-Clone the repository:
-
+```bash
+# Clone the repository
 git clone https://github.com/ranjan-uprety/SpendWise.git
+
+# Navigate into the project folder
 cd SpendWise
 
-
-
+# Open in Visual Studio, build, and run
 Open SpendWise.sln in Visual Studio.
-
-
 
 Build and run the project to start managing your finances!
 
 🤝 Contributing
-
-SpendWise is a personal project to explore .NET MAUI development. Contributions, ideas, or bug reports are welcome via pull requests or issues on GitHub.
+SpendWise is a personal project to explore .NET MAUI development.
+Contributions, ideas, or bug reports are welcome via pull requests or issues on GitHub.
 
 📬 Contact
-
-Created by Ranjan Uprety. Reach out for feedback, suggestions, or collaboration opportunities!
+Created by Ranjan Uprety – feel free to reach out for feedback, suggestions, or collaboration opportunities.
