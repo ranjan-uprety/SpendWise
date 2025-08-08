@@ -48,29 +48,31 @@ Add inflows, outflows, and debts with ease.
 Quickly add Inflow, Outflow, and Debt.  
 ![Add Cash](wwwroot/addcash.jpg)
 
-*(More screenshots are available in the `wwwroot/images/` directory.)*
-
 ---
 
-## 🚀 Getting Started
+
+## 🚀 Installation & Setup
 
 To run **SpendWise** locally:
 
 ```bash
-# Clone the repository
 git clone https://github.com/ranjan-uprety/SpendWise.git
-
-# Navigate into the project folder
 cd SpendWise
+
+```
 
 # Open in Visual Studio, build, and run
 Open SpendWise.sln in Visual Studio.
 
 Build and run the project to start managing your finances!
 
-🤝 Contributing
+
+## 🙌 Contributions
 SpendWise is a personal project to explore .NET MAUI development.
 Contributions, ideas, or bug reports are welcome via pull requests or issues on GitHub.
 
-📬 Contact
-Created by Ranjan Uprety – feel free to reach out for feedback, suggestions, or collaboration opportunities.
+## 📧 Contact
+
+Created by [Ranjan Uprety](https://www.linkedin.com/in/ranjan-uprety/) – feel free to reach out for feedback or collaboration ideas!
+
+
