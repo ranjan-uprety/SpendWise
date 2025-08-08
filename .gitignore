@@ -1,0 +1,49 @@
+# .NET MAUI and C# specific ignores
+bin/
+obj/
+*.user
+*.suo
+*.userprefs
+*.cache
+*.pdb
+*.dll
+*.exe
+*.msi
+*.msix
+*.appx
+*.nupkg
+*.snk
+*.bak
+*.tmp
+*.log
+*.vs
+*.vscode
+*.csproj.DotSettings
+*.sln.DotSettings
+*.db
+*.sqlite
+*.db3
+*.sdf
+
+# MAUI-specific ignores
+/Platforms/MacCatalyst/
+/Platforms/Windows/
+/Platforms/iOS/
+/Platforms/Android/build/
+
+# Visual Studio / Rider IDE
+.idea/
+*.sln.iml
+
+# Dependency directories
+packages/
+node_modules/
+wwwroot/lib/
+
+# User-specific files
+appsettings.json
+secrets.json
+
+# Build output
+dist/
+publish/
